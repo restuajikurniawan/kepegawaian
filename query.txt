@@ -1,0 +1,22 @@
+SELECT
+   k.nama_karyawan,
+   (select jml_gaji_pokok from master_gaji_pokok where id_status = k.id_status and id_master_gaji = 'GP00084') as gaji_pokok,
+   (select (jml_gaji_pokok * (select ((jam_selesai - jam_mulai) / 10000 ) from lembur_pegawai)) from master_gaji_pokok where id_status = k.id_status and id_master_gaji = 'GP00106') as gaji_lembur
+FROM
+   `karyawan` as k
+
+
+
+
+SELECT
+  gaji_pegawai.id_pegawai,
+  gaji_pegawai.jumlah AS gaji_pokok, gaji_lembur_pegawai.jumlah AS gaji_lembur , 
+  SUM(tunjangan_pegawai.jumlah) AS tot_tunjangan 
+  FROM `gaji_pegawai` 
+  LEFT JOIN gaji_lembur_pegawai ON gaji_lembur_pegawai.id_pegawai = gaji_pegawai.id_pegawai
+	LEFT JOIN tunjangan_pegawai ON  tunjangan_pegawai.id_pegawai = gaji_pegawai.id_pegawai 
+GROUP BY gaji_pegawai.id_pegawai
+
+
+SELECT * FROM `perjalanan_dinas`JOIN karyawan ON perjalanan_dinas.id_pegawai = karyawan.id_karyawan  WHERE perjalanan_dinas.status = '1' AND tgl_berangkat BETWEEN '2019-01-20' AND '2019-02-20'
+
